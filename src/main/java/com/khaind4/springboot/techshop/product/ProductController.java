@@ -1,5 +1,6 @@
 package com.khaind4.springboot.techshop.product;
 
+import com.khaind4.springboot.techshop.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

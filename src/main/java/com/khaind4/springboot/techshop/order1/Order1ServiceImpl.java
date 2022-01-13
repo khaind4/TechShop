@@ -1,5 +1,6 @@
 package com.khaind4.springboot.techshop.order1;
 
+import com.khaind4.springboot.techshop.exception.NotFoundException;
 import com.khaind4.springboot.techshop.orderDetail.OrderDetail;
 import com.khaind4.springboot.techshop.product.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,8 @@ public class Order1ServiceImpl implements Order1Service{
         for(OrderDetail od1 : od) {
             // find Product.price
             long pid = od1.getProduct().getPid();
-            double price = productRepository.findById(pid).orElse(null).getPrice();
+            double price = productRepository.findById(pid)
+                    .orElseThrow(() -> new NotFoundException("Not found the ID: " + pid)).getPrice();
 
             // orderDetailPrice = quantity * price
             double odPrice = od1.getQuantity() * price;
@@ -46,7 +48,7 @@ public class Order1ServiceImpl implements Order1Service{
 
     @Override
     public Order1 findById(long id) {
-        return order1Repository.findById(id).orElse(null);
+        return order1Repository.findById(id).orElseThrow(() -> new NotFoundException("Not found the ID: " + id));
     }
 
     @Override
@@ -62,7 +64,7 @@ public class Order1ServiceImpl implements Order1Service{
     @Override
     public Order1 update(long id, Order1 order1) {
         // update orderDetail
-        Order1 o = order1Repository.findById(id).orElse(null);
+        Order1 o = order1Repository.findById(id).orElseThrow(() -> new NotFoundException("Not found the ID: " + id));
         o.setOrderDetail(order1.getOrderDetail());
 
         // update odPrice & totalPrice
@@ -71,7 +73,8 @@ public class Order1ServiceImpl implements Order1Service{
         for (OrderDetail od1 : od) {
             // find Product.price
             long pid = od1.getProduct().getPid();
-            double price = productRepository.findById(pid).orElse(null).getPrice();
+            double price = productRepository.findById(pid)
+                    .orElseThrow(() -> new NotFoundException("Not found the ID: " + pid)).getPrice();
 
             // orderDetailPrice = quantity * price
             double odPrice = od1.getQuantity() * price;

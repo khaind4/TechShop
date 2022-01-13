@@ -1,5 +1,6 @@
 package com.khaind4.springboot.techshop.customer;
 
+import com.khaind4.springboot.techshop.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +35,7 @@ public class CustomerServiceImpl implements CustomerService{
 
     @Override
     public Customer findById(long id) {
-        return customerRepository.findById(id).orElse(null);
+        return customerRepository.findById(id).orElseThrow(() -> new NotFoundException("Not found the ID: " + id));
     }
 
     @Override
@@ -44,7 +45,7 @@ public class CustomerServiceImpl implements CustomerService{
 
     @Override
     public Customer update(long id, Customer customer) {
-        Customer customer1 = customerRepository.findById(id).orElse(null);
+        Customer customer1 = customerRepository.findById(id).orElseThrow(() -> new NotFoundException("Not found the ID: " + id));
 
         customer1.setName(customer.getName());
         customer1.setPhoneNumber(customer.getPhoneNumber());

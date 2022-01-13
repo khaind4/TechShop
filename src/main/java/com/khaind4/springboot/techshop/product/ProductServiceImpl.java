@@ -1,5 +1,6 @@
 package com.khaind4.springboot.techshop.product;
 
+import com.khaind4.springboot.techshop.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public Product findById(long id) {
-        return productRepository.findById(id).orElse(null);
+        return productRepository.findById(id).orElseThrow(() -> new NotFoundException("Not found the ID: " + id));
     }
 
     @Override
@@ -30,7 +31,7 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public Product update(long id, Product product) {
-        Product product1 = productRepository.findById(id).orElse(null);
+        Product product1 = productRepository.findById(id).orElseThrow(() -> new NotFoundException("Not found the ID: " + id));
 
         product1.setName(product.getName());
         product1.setPrice(product.getPrice());
